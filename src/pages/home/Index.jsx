@@ -1,14 +1,20 @@
 import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, useRouteMatch, Redirect } from "react-router";
 
 import { HomePage } from "./HomePage";
 import { Authentication } from "./authentication";
 
 function Home() {
+    let { path } = useRouteMatch();
+
     return (
         <Switch>
-            <Route path="/" exact component={HomePage} />
-            <Route component={Authentication} />
+            <Route exact path={`${path}/`}>
+                <HomePage />
+            </Route>
+            <Route path={path}>
+                <Authentication />
+            </Route>
             <Redirect from="*" to="/" />
         </Switch>
     );

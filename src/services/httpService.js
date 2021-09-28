@@ -3,10 +3,10 @@ import axios from "axios";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-let user = JSON.parse(localStorage.getItem("user"));
+let user = localStorage.getItem("token")
 
 if (user && user.token)
-    axios.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${user}`;
 
 axios.interceptors.response.use(null, (error) => {
     const expectedErrors =

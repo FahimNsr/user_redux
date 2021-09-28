@@ -6,14 +6,16 @@ import { Home } from "./pages/home";
 
 function App() {
     return (
-        <div className={"app-container bg-ligh"}>
-            <BrowserRouter>
-                <Switch>
-                    <Route component={Home} />
-                    <Redirect from="*" to="/" />
-                </Switch>
-            </BrowserRouter>
-        </div>
+        <BrowserRouter>
+            <Switch>
+                <div className={"app-container bg-light"}>
+                    <Route path="">
+                        <Home />
+                    </Route>
+                </div>
+                <Redirect from="*" to="/" />
+            </Switch>
+        </BrowserRouter>
     );
 }
 

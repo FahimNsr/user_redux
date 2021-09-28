@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { registerValidationSchema } from "../../../validation";
 import { userActions } from "../../../redux/action";
 
-function Register() {
+function Register({ history }) {
     const initialValues = {
         email: "",
         password: "",
@@ -15,8 +15,20 @@ function Register() {
         acceptTerms: false,
     };
     const dispatch = useDispatch();
-    const registerstatus = useSelector((state) => state.registration);
-    console.log(registerstatus);
+    const registerStatus = useSelector((state) => state.registration);
+
+    // reset login status
+    useEffect(() => {
+        dispatch(userActions.logout());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // redirect to login when registered successfully
+    useEffect(() => {
+        if (registerStatus.status) {
+            history.push("./login");
+        }
+    }, [history, registerStatus.status]);
 
     function onSubmit(user) {
         if (user.email && user.password && user.confirmPassword && user.acceptTerms) {
@@ -30,8 +42,7 @@ function Register() {
                 <Form>
                     <h3 className="card-header">Register</h3>
                     <div className="card-body">
-
-                        {registerstatus[0] === false ? <h5 className="card-header bg-danger text-center ">{registerstatus[1]}</h5> : null}
+                        {registerStatus.error ? <h5 className="card-header bg-danger text-center ">{registerStatus.error}</h5> : null}
 
                         <div className="form-group">
                             <label>Email</label>
@@ -81,8 +92,11 @@ function Register() {
                             <button type="submit" className="btn btn-primary">
                                 Register
                             </button>
+                            <Link to="/login" className="btn btn-link">
+                                Login
+                            </Link>
                             <Link to="/" className="btn btn-link">
-                                Cancel
+                                Home
                             </Link>
                         </div>
                     </div>
